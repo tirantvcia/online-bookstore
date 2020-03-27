@@ -20,9 +20,6 @@ import lombok.ToString;
 
 @Entity
 @Table(name="tbl_book")
-@Setter
-@Getter
-@ToString
 public class Book {
 	
 	@Id
