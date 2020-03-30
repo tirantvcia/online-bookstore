@@ -23,4 +23,5 @@
 hs_err_pid*
 
 /springboot-online-bookstore/target/
+/angular-bookstore/node_modules
 
