@@ -14,10 +14,7 @@ export class BookCategoryComponent implements OnInit {
   constructor(private _bookService: BookService) { }
 
   ngOnInit(): void {
-
       this.listBookCategories();
-
-      
   }
 
   listBookCategories() {
