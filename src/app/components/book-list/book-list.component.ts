@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/common/book';
 import { BookService } from 'src/app/services/book.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
@@ -11,56 +12,31 @@ import { BookService } from 'src/app/services/book.service';
 export class BookListComponent implements OnInit {
 
   books: Book[];
-  /*= [
-    {
-      sku: 	"text-100", 
-      name:     "C Programming Language", 
-        description:     "Learn C Programming Language",
-        imageUrl:     "assets/images/books/text-100.png",
-        active:     true,
-        unitsInStock:    100,
-        unitPrice:     600,
-      //  category:    1, 
-        createdOn: new Date(), 
-        updatedOn: null,
-    },
-    {
-      
-      sku: 	"text-101", 
-      name:     "C# Crash Course", 
-        description:     "Learn C# Programming Language",
-        imageUrl:     "assets/images/books/text-101.png",
-        active:     true,
-        unitsInStock:    100,
-        unitPrice:     900,
-      //  category:    1, 
-        createdOn: new Date(), 
-        updatedOn: null,
-    },
-    {
-    
-    
-      sku: 	"text-102", 
-      name:     "C++ Crash Course", 
-        description:     "Learn C++ Programming Language",
-        imageUrl:     "assets/images/books/text-102.png",
-        active:     true,
-        unitsInStock:    100,
-        unitPrice:     700,
-      //  category:    1, 
-        createdOn: new Date(), 
-        updatedOn: null,
-    }   
-  ] */
-  constructor(private _bookService: BookService) { }
+  currentCategoryId: number;
+
+  constructor(private _bookService: BookService, 
+        private _activatedRoutes: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getListBooks();
+    //this.getListBooks();
+    this._activatedRoutes.paramMap.subscribe( () => {
+      this.getListBooks();
+      }
+      
+    )
   }
 
   getListBooks() {
+    
+    const hasCategoryId: boolean = this._activatedRoutes.snapshot.paramMap.has('id');
+    if (hasCategoryId) {
+        this.currentCategoryId = +this._activatedRoutes.snapshot.paramMap.get('id');
+    } else {
+      this.currentCategoryId = 1;
+    }
+
     //Subscriure el observer book-list (consumidor) al observable bookService (suscriptor)
-    this._bookService.getBooks().subscribe (
+    this._bookService.getBooks(this.currentCategoryId).subscribe (
       data => {
         this.books = data;
         //console.log(data);
