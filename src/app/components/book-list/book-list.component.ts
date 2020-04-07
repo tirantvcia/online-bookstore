@@ -13,6 +13,7 @@ export class BookListComponent implements OnInit {
 
   books: Book[];
   currentCategoryId: number;
+  searchModule: boolean;
 
   constructor(private _bookService: BookService, 
         private _activatedRoutes: ActivatedRoute) { }
@@ -27,7 +28,16 @@ export class BookListComponent implements OnInit {
   }
 
   getListBooks() {
-    
+    this.searchModule = this._activatedRoutes.snapshot.paramMap.has('keyboard');
+    if (this.searchModule)   {
+      //do search work
+      this.handleSearhListBooks();
+    } else {
+      this.handleListBooks();
+    }
+  }
+
+  handleListBooks() {
     const hasCategoryId: boolean = this._activatedRoutes.snapshot.paramMap.has('id');
     if (hasCategoryId) {
         this.currentCategoryId = +this._activatedRoutes.snapshot.paramMap.get('id');
@@ -41,6 +51,15 @@ export class BookListComponent implements OnInit {
         this.books = data;
         //console.log(data);
 
+      }
+    )
+  }
+
+  handleSearhListBooks() {
+    const keyboard: string = this._activatedRoutes.snapshot.paramMap.get('keyboard');
+    this._bookService.searchBooks(keyboard).subscribe (
+      data => {
+        this.books = data;
       }
     )
   }

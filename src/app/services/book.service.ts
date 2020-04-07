@@ -16,9 +16,7 @@ export class BookService {
 
   getBooks(categoryId: number): Observable<Book[]> {
     const searchUrl = `${this.baseUrl}/search/categoryid?id=${categoryId}`;
-    return this.httpClient.get<GetResponseBooks>(searchUrl).pipe(
-      map(response => response._embedded.books)
-    );
+    return this.getBooksList(searchUrl);
   }
 
   getBookCategories(): Observable<BookCategory[]> {
@@ -27,7 +25,20 @@ export class BookService {
       map(response => response._embedded.bookCategory)
     );
   }
+
+
+  searchBooks(keyboard: string): Observable<Book[]> {
+    const searchUrl = `${this.baseUrl}/search/searchbykeyboard?name=${keyboard}`;
+    return this.getBooksList(searchUrl);
+  }
+
+  private getBooksList(searchUrl: string): Observable<Book[]> {
+    return this.httpClient.get<GetResponseBooks>(searchUrl).pipe(map(response => response._embedded.books));
+  }
+  
 }
+
+
 
 /*
 This will help to unwrap the book array
