@@ -16,18 +16,20 @@ export class BookDetailsComponent implements OnInit {
     private _activatedRoutes: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getBookInfo();
+    this._activatedRoutes.paramMap.subscribe(
+      () => {
+        this.getBookInfo();
+      }
+    )
+    
   }
 
   getBookInfo() {
     const id: number = +this._activatedRoutes.snapshot.paramMap.get('id');
      //Subscriure el observer book-list (consumidor) al observable bookService (suscriptor)
-     console.log(" getBookInfo number " + id);
      this._bookService.get(id).subscribe (
       data => {
         this.book = data;
-        console.log(data);
-
       }
     )
 
