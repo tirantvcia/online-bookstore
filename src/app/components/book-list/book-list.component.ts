@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Book } from 'src/app/common/book';
 import { BookService } from 'src/app/services/book.service';
 import { ActivatedRoute } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-book-list',
@@ -14,6 +15,11 @@ export class BookListComponent implements OnInit {
   books: Book[];
   currentCategoryId: number;
   searchModule: boolean;
+
+  //pageOfItems: Array<Book>;
+  page_size: number = 5;
+  page_number: number = 1;
+  pageSizeOptions = [5, 10, 15, 20, 25]
 
   constructor(private _bookService: BookService, 
         private _activatedRoutes: ActivatedRoute) { }
@@ -63,4 +69,10 @@ export class BookListComponent implements OnInit {
       }
     )
   }
+
+  handlePage(e: PageEvent ) {
+    this.page_size = e.pageSize
+    this.page_number = e.pageIndex + 1
+  }
+
 }

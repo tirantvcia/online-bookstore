@@ -23,9 +23,9 @@
   <div class="col-lg-9">
 
     <div class="row">
-
+ 
       <div class="row">
-        <div class="col-lg-4 col-md-6 mb-4" *ngFor="let book of books">
+        <div class="col-lg-4 col-md-6 mb-4" *ngFor="let book of books | paginate:page_size:page_number">
           <div class="card h-100">
             <a routerLink="/books/{{book.id}}"><img class="card-img-top img-responsive" [src]="book.imageUrl" alt="" ></a>
             <div class="card-body">
@@ -43,9 +43,23 @@
         <div *ngIf="books?.length == 0" class="col-md-12 alert-warning mt-3">
           No s'han trobat llibres amb el nom especificat
         </div>
-      
       </div>
+             <!--pagination selector
+        <div class="col-md-6">
+          <jw-pagination [items]="books" (changePage)="pageClick($event)" [pageSize]="pageSize"></jw-pagination>
+        </div>-->
+        <!--
+          https://www.youtube.com/watch?v=hV5xmSOW6C8
+        https://material.angular.io/components/paginator/api
+        -->
+        <div class="row">
+          <mat-paginator [length]="books.length"
+          [pageSize]="page_size"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="handlePage($event)" showFirstLastButtons> </mat-paginator>
+        </div>
 
+ 
     </div>
     <!-- /.row -->
 
